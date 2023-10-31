@@ -13,6 +13,7 @@ public class BulletMagazine {
     public void loadBullet(String bullet){
         if(capacity.size()<magazineSize) {
             capacity.add(bullet);
+            System.out.println(bullet+" is loaded to magazine.");
         } else{
             System.out.println("Magazine is full.");
         }

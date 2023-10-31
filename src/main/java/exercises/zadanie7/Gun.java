@@ -20,9 +20,12 @@ public class Gun {
         gun1.loadBullet("Bang 3!");
         gun1.loadBullet("Bang 4!");
         gun1.loadBullet("Bang 5!");
+        gun1.loadBullet("Bang 6!");
 
         gun1.isLoaded();
 
+        gun1.shot();
+        gun1.shot();
         gun1.shot();
         gun1.shot();
         gun1.shot();
