@@ -43,8 +43,10 @@ public class Main {
         carService.showCarsOlderThenYear(1999);
         System.out.println("---");
 
-        carService.showMostExpensiveCar();
-        carService.showCheapestCar();
+        System.out.println("Najdroższe auto:");
+        carService.showMostExpensiveCar().ifPresent(System.out::println);
+        System.out.println("Najtańsze auto:");
+        carService.showCheapestCar().ifPresent(System.out::println);
         System.out.println("---");
 
         carService.showCarsWithMin3Manufacturers();
@@ -53,8 +55,9 @@ public class Main {
         carService.showAllCarsInOrder('>');
         System.out.println("---");
 
-        carService.isCarOnList("Opel","Cadet");
-        carService.isCarOnList("Toyota","Prius");
+        System.out.println("Is car on list?");
+        System.out.println("Opel Cadet: "+carService.isCarOnList("Opel","Cadet"));
+        System.out.println("Toyota Prius: "+carService.isCarOnList("Toyota","Prius"));
         System.out.println("---");
 
         carService.showAllCarsFromProducer("BMW");

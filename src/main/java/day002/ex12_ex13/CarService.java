@@ -1,10 +1,9 @@
 package day002.ex12_ex13;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Predicate;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
 
 public class CarService {
     private List<Car> cars;
@@ -14,10 +13,11 @@ public class CarService {
     }
 
     public CarService(Car... car) {
-        cars = new ArrayList<>();   //nie Arrays.asList() ani List.of() boniemodyfikowalne!!!
-        for (Car c : car) {
-            cars.add(c);
-        }
+        cars = new ArrayList<>();   //nie Arrays.asList() ani List.of() bo niemodyfikowalne!!!
+        Collections.addAll(cars, car);
+//        for (Car c : car) {
+//            cars.add(c);
+//        }
     }
 
     public boolean addCar(Car car) {
@@ -34,7 +34,7 @@ public class CarService {
 //        for (Car car : cars) {
 //            System.out.println(car.toString());
 //        }
-        //wersja ze streamm
+// wersja ze streamm
         System.out.println(cars.stream()
                 .map(Car::toString)
                 .collect(Collectors.toList()));
@@ -43,7 +43,7 @@ public class CarService {
     public void showV12EngineCars() {
         List<Car> collected = cars.stream()
                 .filter(car -> EngineType.V12.equals(car.getEngineType()))
-                .collect(Collectors.toList());
+                .toList();
         if(collected.isEmpty()) {
             System.out.println("Brak aut z silnikiem V12.");
         } else {
@@ -62,22 +62,24 @@ public class CarService {
         }
     }
 
-    public void showMostExpensiveCar() {
+    public Optional<List<Car>> showMostExpensiveCar() {
         List<Car> collected = cars.stream()
-//                .sorted(Comparator.comparingInt(Car::getPrice).reversed())
-//                .findFirst()
                 .max(Comparator.comparingInt(Car::getPrice))
                 .stream().toList();
-        System.out.println("Auto o najwyższej cenie: " + collected);
+//                .sorted(Comparator.comparingInt(Car::getPrice).reversed())
+//                .findFirst()
+//        System.out.println("Auto o najwyższej cenie: " + collected);
+        return Optional.of(collected);
     }
 
-    public void showCheapestCar() {
+    public Optional<List<Car>> showCheapestCar() {
         List<Car> collected = cars.stream()
-//                .sorted(Comparator.comparingInt(Car::getPrice))
-//                .findFirst()
                 .min(Comparator.comparingInt(Car::getPrice))
                 .stream().toList();
-        System.out.println("Auto o najniższej cenie: " + collected);
+//                .sorted(Comparator.comparingInt(Car::getPrice))
+//                .findFirst()
+//        System.out.println("Auto o najniższej cenie: " + collected);
+        return Optional.of(collected);
     }
 
     public void showCarsWithMin3Manufacturers() {
@@ -93,34 +95,30 @@ public class CarService {
 
     public void showAllCarsInOrder(char sign) {
         List<Car> collected;
-        String text="";
+        String text = sign == '>' ? "Kolejność malejąca (wg nazwy): " : "Kolejność rosnąca (wg nazwy): ";
 
-        if (sign == '>') {
             collected = cars.stream()
-                    .sorted((o1, o2) -> o2.getName().compareToIgnoreCase(o1.getName()))
+                    .sorted((o1, o2) -> sign == '>' ?
+                            o2.getName().compareToIgnoreCase(o1.getName()) :
+                            o1.getName().compareToIgnoreCase(o2.getName()))
                     .collect(Collectors.toList());
-            text = "Kolejność malejąca: ";
-        } else {
-            collected = cars.stream()
-                    .sorted((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()))
-                    .collect(Collectors.toList());
-            text = "Kolejność rosnąca: ";
-        }
-        System.out.println(text+collected.toString());
+        System.out.println(text+ collected);
     }
-
     public boolean isCarOnList(String name, String model) {
-        boolean result = false;
+/*        boolean result = false;
         for (Car car : cars) {
             if (name.equalsIgnoreCase(car.getName()) && model.equalsIgnoreCase(car.getModel())) {
                 result = true;
                 break;
             }
-        }
-        System.out.println("Czy jest na liście " + name + " " + model + "? " + result);
-        return result;
+        }*/
+        return cars.stream()
+                .anyMatch(n -> {
+                    boolean r = name.equalsIgnoreCase(n.getName()) && model.equalsIgnoreCase(n.getModel());
+                    return r;
+                });
+//        System.out.println("Czy jest na liście " + name + " " + model + "? " + result);
     }
-
     public void showAllCarsFromProducer(String producersName) {
         List<Car> collected = cars.stream()
                 .filter(car -> car.getProducersList()
@@ -133,48 +131,37 @@ public class CarService {
             System.out.println("Auta od producenta " + producersName + ": " + collected.toString());
         }
     }
-
     public void showAllCarsByManufacturerYear(String sign, int year) {
         List<Car> collected = null;
-        switch (sign) {
-            case "<" -> collected = cars.stream()
+        collected = cars.stream()
                     .filter(c -> c.getProducersList()
                             .stream()
-                            .anyMatch(p -> p.getYear() < year))
-                    .collect(Collectors.toList());
-            case ">" -> collected = cars.stream()
-                    .filter(c -> c.getProducersList()
-                            .stream()
-                            .anyMatch(p -> p.getYear() > year))
-                    .collect(Collectors.toList());
-            case "<=" -> collected = cars.stream()
-                    .filter(c -> c.getProducersList()
-                            .stream()
-                            .anyMatch(p -> p.getYear() <= year))
-                    .collect(Collectors.toList());
-            case ">=" -> collected = cars.stream()
-                    .filter(c -> c.getProducersList()
-                            .stream()
-                            .anyMatch(p -> p.getYear() >= year))
-                    .collect(Collectors.toList());
-            case "==" -> collected = cars.stream()
-                    .filter(c -> c.getProducersList()
-                            .stream()
-                            .anyMatch(p -> p.getYear() == year))
-                    .collect(Collectors.toList());
-            case "!=" -> collected = cars.stream()
-                    .filter(c -> c.getProducersList()
-                            .stream()
-                            .anyMatch(p -> p.getYear() != year))
-                    .collect(Collectors.toList());
-            default -> System.out.println("Błędny znak!");
-        }
+                            .anyMatch(p -> optionalSign(p.getYear(),year,sign)))
+                .collect(Collectors.toList());
 
-        if(collected==null || collected.isEmpty()) {
+        if(collected.isEmpty()) {
             System.out.println("Brak aut od producentów powstałych " + sign + " " + year + " roku.");
         } else{
             System.out.println("Auta od producentów powstałych " + sign + " " + year + " roku: " + collected.toString());
         }
     }
-
+    private static boolean optionalSign(int a, int b, String sign){
+        switch (sign) {
+            case "<" -> {
+                return a<b;
+            } case "<=" -> {
+                return a<=b;
+            } case ">=" -> {
+                return a>=b;
+            } case ">" -> {
+                return a>b;
+            } case "==" -> {
+                return a==b;
+            } case "!=" -> {
+                return a!=b;
+            } default ->{
+                return false;
+            }
+        }
+    }
 }
