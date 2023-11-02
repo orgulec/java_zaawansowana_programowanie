@@ -13,26 +13,24 @@ public class Gun {
 
         BulletMagazine gun1 = new BulletMagazine(4);
 
-        gun1.isLoaded();
+        System.out.println(gun1.isLoaded());
 
-        gun1.loadBullet("Bang 1!");
-        gun1.loadBullet("Bang 2!");
-        gun1.loadBullet("Bang 3!");
-        gun1.loadBullet("Bang 4!");
-        gun1.loadBullet("Bang 5!");
-        gun1.loadBullet("Bang 6!");
+        gun1.loadBullet("Bang 1!").ifPresent(System.out::println);
+        gun1.loadBullet("Bang 2!").ifPresent(System.out::println);
+        gun1.loadBullet("Bang 3!").ifPresent(System.out::println);
+        gun1.loadBullet("Bang 4!").ifPresent(System.out::println);
+        gun1.loadBullet("Bang 5!").ifPresent(System.out::println);
+        gun1.loadBullet("Bang 6!").ifPresent(System.out::println);
 
-        gun1.isLoaded();
+        System.out.println(gun1.isLoaded());
 
-        gun1.shot();
-        gun1.shot();
-        gun1.shot();
-        gun1.shot();
-        gun1.shot();
-        gun1.shot();
-        gun1.shot();
+        gun1.shot().ifPresent(System.out::println);
+        gun1.shot().ifPresent(System.out::println);
+        gun1.shot().ifPresent(System.out::println);
+        gun1.shot().ifPresent(System.out::println);
+        gun1.shot().ifPresent(System.out::println);
 
-        gun1.isLoaded();
+        System.out.println(gun1.isLoaded());
     }
 
 

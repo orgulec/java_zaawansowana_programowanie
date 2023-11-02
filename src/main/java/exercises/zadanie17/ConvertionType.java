@@ -1,4 +1,7 @@
 package exercises.zadanie17;
+
+import java.math.BigDecimal;
+
 /*
 Zadanie 17.
 Stwórz klasę enum ConversionType ze stałymi METERS_TO_YARDS, YARDS_TO_METERS, CENTIMETERS_TO_ICHES,
@@ -9,15 +12,15 @@ convert(int value, ConvertionType conversionType) i na podstawie przekazanej war
 korzystała z Convertera danego typu i zwracała wynik.
  */
 public enum ConvertionType {
-    METERS_TO_YARDS(1.09361f),
-    YARDS_TO_METERS(0.9144f),
-    CENTIMETERS_TO_ICHES(0.393701f),
-    INCHES_TO_CENTIMETERS(2.54f),
-    KILOMETERS_TO_MILES(0.621371f),
-    MILES_TO_KILOMETERS(1.609344f);
-    public final float converter;
+    METERS_TO_YARDS(new BigDecimal("1.09361")),
+    YARDS_TO_METERS(new BigDecimal("0.9144")),
+    CENTIMETERS_TO_INCHES(new BigDecimal("0.393701")),
+    INCHES_TO_CENTIMETERS(new BigDecimal("2.54")),
+    KILOMETERS_TO_MILES(new BigDecimal("0.621371")),
+    MILES_TO_KILOMETERS(new BigDecimal("1.609344"));
+    public final BigDecimal converter;
 
-    ConvertionType(float converter) {
+    ConvertionType(BigDecimal converter) {
         this.converter = converter;
     }
 }

@@ -1,33 +1,38 @@
 package exercises.zadanie7;
 
+import java.util.Optional;
 import java.util.Stack;
 
 public class BulletMagazine {
     private Stack<String> capacity;
-    private int magazineSize;
+    private final int magazineSize;
 
     BulletMagazine(int magazineSize){
         this.capacity = new Stack<String>();
         this.magazineSize = magazineSize;
     }
-    public void loadBullet(String bullet){
+    public Optional<String> loadBullet(String bullet){
+        String result;
         if(capacity.size()<magazineSize) {
             capacity.add(bullet);
-            System.out.println(bullet+" is loaded to magazine.");
+            result = bullet+" is loaded to magazine.";
         } else{
-            System.out.println("Magazine is full.");
+            result = "Magazine is full.";
         }
+        return Optional.of(result);
     }
-    public void isLoaded(){
-        System.out.println("Magazine status: "+capacity.size()+"/"+magazineSize);
+    public String isLoaded(){
+        return ("Magazine status: "+capacity.size()+"/"+magazineSize);
     }
-    public void shot(){
-        if(capacity.size()>0) {
-            System.out.println(capacity.lastElement());
+    public Optional<String> shot(){
+        String result;
+        if(!capacity.isEmpty()) {
+            result = capacity.lastElement();
             capacity.remove(capacity.lastElement());
         }else{
-            System.out.println("Magazine is empty!");
+            result = "Magazine is empty!";
         }
+        return Optional.of(result);
     }
 
 }

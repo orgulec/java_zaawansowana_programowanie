@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
@@ -35,12 +34,14 @@ public class Computer {
                 ", GFX: " + gpu.toString();
     }
 
-    private AtomicInteger getRamSize() {
-        AtomicInteger fullSize = new AtomicInteger();
+    private int getRamSize() {
+/*        AtomicInteger fullSize = new AtomicInteger();
         ramMemory.forEach((k) -> {
             fullSize.addAndGet(k.size);
         });
-        return fullSize;
+        return (int) fullSize.intValue();*/
+        return ramMemory.stream()
+                .mapToInt(entry -> entry.size).sum();
     }
 
     public boolean addRam(RAM ram) {
